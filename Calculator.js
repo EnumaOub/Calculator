@@ -115,6 +115,7 @@ function InitCalculator() {
         btn_op.addEventListener("click", (event) => {
             GetOp(value);
         });
+        
         op_container.appendChild(btn_op);
     }
     container.appendChild(op_container);
