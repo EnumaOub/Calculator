@@ -55,6 +55,7 @@ button {
   border-radius: 5px;
   background-color: rgb(199, 199, 199);
   color: #F9FAF8;
+  box-shadow: 5px 0px 20px rgb(0, 0, 0);
 }
 
 .display {

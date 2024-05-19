@@ -147,7 +147,7 @@ function CreatePadNum() {
         btn_nb.style.color = "white";
         btn_nb.style["border-radius"] = "8px";
         if (value == 0) {
-            btn_nb.style.padding = `${pad_h_btn}px ${pad_w_btn*2+15}px ${pad_h_btn}px ${pad_w_btn*2+15}px`;
+            btn_nb.style.padding = `${pad_h_btn}px ${pad_w_btn*2+14}px ${pad_h_btn}px ${pad_w_btn*2+15}px`;
         }
         btn_nb.addEventListener("click", (event) => {
             GetVal(value.toString(10));
@@ -162,7 +162,7 @@ function AddDot(nb_container) {
     let btn_nb = document.createElement("button");
     btn_nb.setAttribute("id", "dot");
     btn_nb.textContent = ".";
-    btn_nb.style.padding = `${pad_h_btn}px ${pad_w_btn}px ${pad_h_btn}px ${pad_w_btn}px`;
+    btn_nb.style.padding = `${pad_h_btn}px ${pad_w_btn+4}px ${pad_h_btn}px ${pad_w_btn+4}px`;
     btn_nb.style["font-size"] = "24px"
     btn_nb.style["font-weight"] = "bold"
     btn_nb.style.background = "gray";
