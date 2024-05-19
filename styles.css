@@ -1,7 +1,6 @@
 * {
     box-sizing: border-box;
     margin: 0;
-    color: #F9FAF8;
   }
   
 body {
@@ -12,7 +11,7 @@ body {
   align-items: center;
   justify-content: center;
   gap: 5px;
-  background: linear-gradient(rgb(114, 0, 0), rgb(243, 151, 151));
+  background: beige;
 }
 
 .title {
@@ -28,6 +27,8 @@ body {
   font-size: 35px;
   font-weight: 900;
   text-align: center;
+
+  color: #000000;
 }
 
 .title p {
@@ -48,10 +49,12 @@ button {
   flex-wrap: wrap;
   justify-content: center;
   gap: 5px;
-  max-width: 454px;
-  border: solid rgb(68, 68, 68);
+  max-width: 500px;
+  width: 100%;
+  border: 10px solid rgb(68, 68, 68);
   border-radius: 5px;
   background-color: rgb(199, 199, 199);
+  color: #F9FAF8;
 }
 
 .display {
@@ -69,4 +72,21 @@ button {
     font-weight: bold;
     overflow-y: auto;
     z-index: 50;
+    color: #000000;
+}
+
+
+.footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-content: center;
+    padding: 20px;
+    color: #000000;
+    font-size: 24px;
+}
+
+.footer a {
+    text-decoration: none;
+    color: #000000;
 }

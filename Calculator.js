@@ -144,6 +144,7 @@ function CreatePadNum() {
         btn_nb.style["font-size"] = "24px"
         btn_nb.style["font-weight"] = "bold"
         btn_nb.style.background = "gray";
+        btn_nb.style.color = "white";
         btn_nb.style["border-radius"] = "8px";
         if (value == 0) {
             btn_nb.style.padding = `${pad_h_btn}px ${pad_w_btn*2+15}px ${pad_h_btn}px ${pad_w_btn*2+15}px`;
@@ -165,6 +166,7 @@ function AddDot(nb_container) {
     btn_nb.style["font-size"] = "24px"
     btn_nb.style["font-weight"] = "bold"
     btn_nb.style.background = "gray";
+    btn_nb.style.color = "white";
     btn_nb.style["border-radius"] = "8px";
     btn_nb.addEventListener("click", (event) => {
         GetVal(".");
@@ -188,6 +190,7 @@ function CreatePadOp() {
         btn_op.style["font-size"] = "24px"
         btn_op.style["font-weight"] = "bold"
         btn_op.style.background = "orange"
+        btn_op.style.color = "white";
         btn_op.style["border-radius"] = "8px";
         btn_op.addEventListener("click", (event) => {
             GetOp(value);
