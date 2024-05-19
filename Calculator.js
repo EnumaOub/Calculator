@@ -172,9 +172,10 @@ function AddDot(nb_container) {
     nb_container.appendChild(btn_nb);
 }
 
+const operators = ["C", "+", "-", "*", "/", "="]
 function CreatePadOp() {
     const container = document.getElementsByClassName("calculator")[0];
-    const operators = ["C", "+", "-", "*", "/", "="]
+    
     const op_container = document.createElement("div");
     op_container.style["font-size"] = "40px"
     op_container.style.display = "flex"
@@ -202,11 +203,31 @@ function CreatePadOp() {
 
 
 function InitCalculator() {
-    const container = document.getElementsByClassName("calculator")[0];
     CreatePadNum();
     CreatePadOp();
     
 }
+
+
+window.addEventListener("keydown", (e) => {
+    let num = parseInt(e.key, 10)
+    if (!(isNaN(num))) {
+        GetVal(num.toString(10));
+    }
+    else if (operators.slice(1, operators.length).includes(e.key)) {
+        GetOp(e.key);
+        ClickedOp(e.key);
+    }
+    else if (e.key == "Enter") {
+        GetOp("=");
+        ClickedOp("=");
+    }
+    else if (e.key == ".") {
+        GetVal(".");
+    }
+    // console.log(e.key)
+    // console.log(typeof(e.key))
+  });
 
 
 window.addEventListener('load', InitCalculator);
