@@ -79,7 +79,7 @@ button {
     #maindisp {
       font-weight: bold;
       font-size: 2rem;
-      text-align: center;
+      text-align: end;
     }
     #backdisp {
       font-size: 1rem;

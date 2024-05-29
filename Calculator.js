@@ -18,6 +18,7 @@ let values = {
 }
 
 function ClickedOp(id) {
+    if (id == "*") id = "x";
     if (id_clicked == ""){
         id_clicked = id;
         let button = document.getElementById(id);
@@ -38,7 +39,7 @@ function ClickedOp(id) {
 }
 
 function ClearData() {
-    values.a = String(value.val);
+    values.a = String(values.val);
     values.b  = "";
     values.op = "";
     dot_clicked = false;
@@ -154,6 +155,7 @@ function GetVal(value) {
 function GetOp(op_val) {
     if (op_val == "AC") {
         values.val = "";
+        ClickedOp("=") // Reset button opacity
         ClearData()
         Display()
     }
@@ -161,8 +163,8 @@ function GetOp(op_val) {
         values.a = (' ' + values.val).slice(1);
         values.b = "";
         values.op = op_val;
-        values.val = ""
-        Display()
+        values.val = "";
+        Display();
     }
     else if (values.a != ""){
         if (op_val == "=" && values.b  != "") {
