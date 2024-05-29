@@ -76,6 +76,10 @@ button {
     z-index: 50;
     gap:0.2rem;
 
+    p {
+      margin-right: 0.5rem;
+    }
+
     #maindisp {
       font-weight: bold;
       font-size: 2rem;
