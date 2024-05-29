@@ -6,12 +6,16 @@ const Calculator = {
 }
 
 
-let a = "";
-let b = "";
-let op = "";
-let res = "";
 let id_clicked = "";
 let dot_clicked = false;
+
+let values = {
+    a: "",
+    b: "",
+    op: "",
+    val: "",
+    curr: "a"
+}
 
 function ClickedOp(id) {
     if (id_clicked == ""){
@@ -19,8 +23,9 @@ function ClickedOp(id) {
         let button = document.getElementById(id);
         button.style.opacity = "0.4";
     }
-    else if (id == "=" || id == "C") {
+    else if (id == "=") {
         let button_old = document.getElementById(id_clicked);
+        id_clicked = id;
         button_old.style.opacity = "1";
     }
     else {
@@ -33,181 +38,209 @@ function ClickedOp(id) {
 }
 
 function ClearData() {
-    a = String(res);
-    b = "";
-    op = "";
+    values.a = String(value.val);
+    values.b  = "";
+    values.op = "";
     dot_clicked = false;
 }
 
 function operate(op, a, b) {
     let operator;
-    if (op == "+"){ 
+    let res;
+    if (values.op == "+"){ 
         operator = "add";
         res = Calculator[operator](+a, +b);
     }
-    else if (op == "-"){ 
+    else if (values.op == "-"){ 
         operator = "substract";
         res = Calculator[operator](+a, +b);
     }
-    else if (op == "*"){ 
+    else if (values.op == "*"){ 
         operator = "multiply";
         res = Calculator[operator](+a, +b);
     }
-    else if (op == "/"){ 
+    else if (values.op == "/"){ 
         operator = "divide";
-        if (b == "0") {
+        if (values.b  == "0") {
             const container = document.getElementsByClassName("display")[0];
             container.textContent = `ERROR`
         }
         else {
-            res = Calculator[operator](+a, +b);
+            res = Calculator[operator](+values.a, +values.b);
         }
         
     }
-    res = Math.round(+res*1000)/1000
-    DisplayVal(res);
-    ClearData()
+    res = Math.round(+res*1000)/1000;
+    values.val = res.toString(10);
+    Display();
 }
 
 function Display() {
-    const container = document.getElementsByClassName("display")[0];
-    container.textContent = `${a} ${op} ${b}`
+    const back = document.getElementById("backdisp");
+    const main = document.getElementById("maindisp");
+    let operator;
+    if (values.op == "*") {
+        operator = "x";
+    }
+    else {
+        operator = values.op;
+    }
+    if (values.op == "") {
+        back.textContent = ``
+        main.textContent = `${values.a}`
+    }
+    else if (values.b  == "") {
+        back.textContent = `${values.a}`
+        main.textContent = `${operator}`
+    }
+    else if (values.val == "") {
+        back.textContent = `${values.a} ${operator}`
+        main.textContent = `${values.b}`
+    }
+    else {
+        back.textContent = `${values.a} ${operator} ${values.b}`
+        main.textContent = `${values.val}`
+    }
+
 }
 
 function DisplayVal(val) {
     const container = document.getElementsByClassName("display")[0];
-    container.textContent = `${val}`
+    container.textContent = `${values.val}`
 }
 
-function GetVal(val) {
-
-    if (op == "") {
-        if (val == ".") {
-            if (!(a.includes("."))) {
-                a += val;
+function GetVal(value) {
+    if (values.op == "") {
+        if (value == ".") {
+            if (!(values.a.includes("."))) {
+                values.a += value;
                 Display();
             }
         }
         else {
-            a += val;
+            values.a += value;
             Display();
         }
         
     }
-    else {
-        if (val == ".") {
-            if (!(b.includes("."))) {
-                b += val;
+    else if (values.val == "") {
+        if (value == ".") {
+            if (!(values.b.includes("."))) {
+                values.b  += value;
                 Display();
             }
         }
         else {
-            b += val;
+            values.b  += value;
             Display();
         }
-        
+    }
+    else {
+        values.val = ""
+        values.b = ""
+        values.op = ""
+        if (value == ".") {
+            values.a  = "0" + value;
+            Display();
+            
+        }
+        else {
+            values.a = value
+            Display();
+        }
     }
 }
 
 function GetOp(op_val) {
-    if (op_val == "C") {
-        res = "";
+    if (op_val == "AC") {
+        values.val = "";
         ClearData()
         Display()
     }
-    else if (a != ""){
-        if (op_val == "=" && b != "") {
-            operate(op, a, b)
+    else if (values.val != "" && op_val != "DEL") {
+        values.a = (' ' + values.val).slice(1);
+        values.b = "";
+        values.op = op_val;
+        values.val = ""
+        Display()
+    }
+    else if (values.a != ""){
+        if (op_val == "=" && values.b  != "") {
+            operate(values.op, values.a, values.b)
         }
+        else if (op_val == "DEL") {
+            if (values.op == "") {
+                values.a = values.a.slice(0, -1);
+            }
+            else if (values.b  == "") {
+                values.op = "";
+            }
+            else if (values.val == "") {
+                values.b  = values.b.slice(0, -1);
+            }
+            else {
+                values.val = values.val.slice(0, -1);
+            }
+            Display()
+        }
+        
         else {
-            op = op_val;
+            values.op = op_val;
             Display()
         }
     }
 }
 
-const pad_w_btn = 40;
-const pad_h_btn = 10;
 
-function CreatePadNum() {
-    const container = document.getElementsByClassName("calculator")[0];
-    const value_order = [7,8,9,4,5,6,1,2,3,0]
-    const nb_container = document.createElement("div");
-    nb_container.style.width = `${(pad_w_btn+2+5+30)*4+20}px`
-    nb_container.style.display = "flex"
-    nb_container.style["flex-wrap"] = "wrap"
-    for (let value of value_order) {
-        let btn_nb = document.createElement("button");
-        btn_nb.setAttribute("id", value.toString(10));
-        btn_nb.textContent = value.toString(10);
-        btn_nb.style.padding = `${pad_h_btn}px ${pad_w_btn}px ${pad_h_btn}px ${pad_w_btn}px`;
-        btn_nb.style["font-size"] = "24px"
-        btn_nb.style["font-weight"] = "bold"
-        btn_nb.style.background = "gray";
-        btn_nb.style.color = "white";
-        btn_nb.style["border-radius"] = "8px";
-        if (value == 0) {
-            btn_nb.style.padding = `${pad_h_btn}px ${pad_w_btn*2+14}px ${pad_h_btn}px ${pad_w_btn*2+15}px`;
-        }
-        btn_nb.addEventListener("click", (event) => {
+function EventPadNum() {
+    const btn_num = document.getElementsByClassName("num");
+    for (let btn of Object.values(btn_num)) {
+        let value = btn.textContent;
+        
+        btn.addEventListener("click", (event) => {
             GetVal(value.toString(10));
         });
-        nb_container.appendChild(btn_nb);
+        
+        
     }
-    AddDot(nb_container);
-    container.appendChild(nb_container);
 }
 
-function AddDot(nb_container) {
-    let btn_nb = document.createElement("button");
-    btn_nb.setAttribute("id", "dot");
-    btn_nb.textContent = ".";
-    btn_nb.style.padding = `${pad_h_btn}px ${pad_w_btn+4}px ${pad_h_btn}px ${pad_w_btn+4}px`;
-    btn_nb.style["font-size"] = "24px"
-    btn_nb.style["font-weight"] = "bold"
-    btn_nb.style.background = "gray";
-    btn_nb.style.color = "white";
-    btn_nb.style["border-radius"] = "8px";
-    btn_nb.addEventListener("click", (event) => {
-        GetVal(".");
-    });
-    nb_container.appendChild(btn_nb);
-}
 
-const operators = ["C", "+", "-", "*", "/", "="]
-function CreatePadOp() {
-    const container = document.getElementsByClassName("calculator")[0];
-    
-    const op_container = document.createElement("div");
-    op_container.style["font-size"] = "40px"
-    op_container.style.display = "flex"
-    op_container.style["flex-direction"] = "column"
-    for (let value of operators) {
-        let btn_op = document.createElement("button");
-        btn_op.setAttribute("id", value);
-        btn_op.textContent = value;
-        btn_op.style.padding = `${pad_h_btn}px ${pad_w_btn}px ${pad_h_btn}px ${pad_w_btn}px`;
-        btn_op.style["font-size"] = "24px"
-        btn_op.style["font-weight"] = "bold"
-        btn_op.style.background = "orange"
-        btn_op.style.color = "white";
-        btn_op.style["border-radius"] = "8px";
-        btn_op.addEventListener("click", (event) => {
+
+const operators = ["AC", "+", "-", "*", "/", "="]
+function EventPadOp() {
+    const op_btn = document.getElementsByClassName("op");
+    for (let btn of Object.values(op_btn)) {
+        let value = btn.id;
+        if (value == "x") value = "*";
+        btn.addEventListener("click", (event) => {
             GetOp(value);
             ClickedOp(value);
         });
         
-        op_container.appendChild(btn_op);
+
     }
-    container.appendChild(op_container);
+}
+
+function EventSpec() {
+    const spec_btn = document.getElementsByClassName("spec");
+    for (let btn of Object.values(spec_btn)) {
+        let value = btn.id;
+        btn.addEventListener("click", (event) => {
+            GetOp(value);
+        });
+        
+
+    }
 }
 
 
 
 
 function InitCalculator() {
-    CreatePadNum();
-    CreatePadOp();
+    EventPadNum();
+    EventPadOp();
+    EventSpec();
     
 }
 
@@ -227,6 +260,9 @@ window.addEventListener("keydown", (e) => {
     }
     else if (e.key == ".") {
         GetVal(".");
+    }
+    else if (e.key === "Backspace" || e.key === "Delete") {
+        GetOp("DEL");
     }
     // console.log(e.key)
     // console.log(typeof(e.key))
