@@ -5,10 +5,6 @@ const Calculator = {
     "/": function(a, b) {return a / b;},
 }
 
-
-let id_clicked = "";
-let dot_clicked = false;
-
 let values = {
     a: "",
     b: "",
@@ -42,7 +38,6 @@ function ClearData() {
     values.a = String(values.val);
     values.b  = "";
     values.op = "";
-    dot_clicked = false;
 }
 
 function operate(op, a, b) {
