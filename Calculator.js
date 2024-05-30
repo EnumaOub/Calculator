@@ -13,6 +13,8 @@ let values = {
     id_clicked: ""
 }
 
+const operators = ["AC", "+", "-", "*", "/", "="]
+
 function ClickedOp(id) {
     if (id == "*") id = "x";
     if (values.id_clicked == ""){
@@ -89,31 +91,29 @@ function DisplayVal(val) {
     container.textContent = `${values.val}`
 }
 
+function AddValue(value, num) {
+    if (value == ".") {
+        if (!(num.includes("."))) {
+            num += value;
+        }
+    }
+    else {
+        num += value;
+        
+    }
+    return num;
+}
+
+
 function GetVal(value) {
     if (values.op == "") {
-        if (value == ".") {
-            if (!(values.a.includes("."))) {
-                values.a += value;
-                Display();
-            }
-        }
-        else {
-            values.a += value;
-            Display();
-        }
+        values.a = AddValue(value, values.a);
+        Display();
         
     }
     else if (values.val == "") {
-        if (value == ".") {
-            if (!(values.b.includes("."))) {
-                values.b  += value;
-                Display();
-            }
-        }
-        else {
-            values.b  += value;
-            Display();
-        }
+        values.b = AddValue(value, values.b);
+        Display();
     }
     else {
         values.val = ""
@@ -128,6 +128,22 @@ function GetVal(value) {
             values.a = value
             Display();
         }
+    }
+}
+
+function DelVal() {
+    if (values.op == "") {
+        values.a = values.a.slice(0, -1);
+    }
+    else if (values.b  == "") {
+        values.op = "";
+        ClickedOp("=") // Reset button opacity
+    }
+    else if (values.val == "") {
+        values.b  = values.b.slice(0, -1);
+    }
+    else {
+        values.val = values.val.slice(0, -1);
     }
 }
 
@@ -150,18 +166,7 @@ function GetOp(op_val) {
             operate(values.op, values.a, values.b)
         }
         else if (op_val == "DEL") {
-            if (values.op == "") {
-                values.a = values.a.slice(0, -1);
-            }
-            else if (values.b  == "") {
-                values.op = "";
-            }
-            else if (values.val == "") {
-                values.b  = values.b.slice(0, -1);
-            }
-            else {
-                values.val = values.val.slice(0, -1);
-            }
+            DelVal()
             Display()
         }
         
@@ -177,18 +182,15 @@ function EventPadNum() {
     const btn_num = document.getElementsByClassName("num");
     for (let btn of Object.values(btn_num)) {
         let value = btn.textContent;
-        
         btn.addEventListener("click", (event) => {
             GetVal(value.toString(10));
         });
-        
-        
     }
 }
 
 
 
-const operators = ["AC", "+", "-", "*", "/", "="]
+
 function EventPadOp() {
     const op_btn = document.getElementsByClassName("op");
     for (let btn of Object.values(op_btn)) {
@@ -198,8 +200,6 @@ function EventPadOp() {
             GetOp(value);
             ClickedOp(value);
         });
-        
-
     }
 }
 
@@ -210,8 +210,6 @@ function EventSpec() {
         btn.addEventListener("click", (event) => {
             GetOp(value);
         });
-        
-
     }
 }
 
@@ -222,12 +220,12 @@ function InitCalculator() {
     EventPadNum();
     EventPadOp();
     EventSpec();
-    
 }
 
-
+// Part that allow to use key buttons in order to use the calculator
 window.addEventListener("keydown", (e) => {
-    let num = parseInt(e.key, 10)
+    // try to get integer from the key and check if is not nan
+    let num = parseInt(e.key, 10) 
     if (!(isNaN(num))) {
         GetVal(num.toString(10));
     }
@@ -245,8 +243,6 @@ window.addEventListener("keydown", (e) => {
     else if (e.key === "Backspace" || e.key === "Delete") {
         GetOp("DEL");
     }
-    // console.log(e.key)
-    // console.log(typeof(e.key))
   });
 
 
