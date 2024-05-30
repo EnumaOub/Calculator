@@ -205,39 +205,41 @@ function GetOp(op_val) {
 
 
 // Initalise events of numeric pad
+// Implemented Event delegation
 function EventPadNum() {
-    const btn_num = document.getElementsByClassName("num");
-    for (let btn of Object.values(btn_num)) {
-        let value = btn.textContent;
-        btn.addEventListener("click", (event) => {
-            GetVal(value.toString(10));
-        });
+    const pad_num = document.getElementsByClassName("pad-num")[0];
+    pad_num.onclick = function(event) {
+        let target = event.target;
+        if (target.className != "num") return
+        GetVal(target.textContent.toString(10))
     }
 }
 
 
 // Initalise events of operator pad
+// Implemented Event delegation
 function EventPadOp() {
-    const op_btn = document.getElementsByClassName("op");
-    for (let btn of Object.values(op_btn)) {
-        let value = btn.id;
+    const pad_op = document.getElementsByClassName("pad-op")[0];
+    pad_op.onclick = function(event) {
+        let target = event.target;
+        if (target.className != "op") return
+        let value = target.id;
         if (value == "x") value = "*";
-        btn.addEventListener("click", (event) => {
-            GetOp(value);
-            ClickedOp(value);
-        });
+        GetOp(value);
+        ClickedOp(value);
     }
 }
 
 
 // Initalise events of special pad 
+// Implemented Event delegation
 function EventSpec() {
-    const spec_btn = document.getElementsByClassName("spec");
-    for (let btn of Object.values(spec_btn)) {
-        let value = btn.id;
-        btn.addEventListener("click", (event) => {
-            GetOp(value);
-        });
+    const pad_spec = document.getElementsByClassName("pad-spec")[0];
+    pad_spec.onclick = function(event) {
+        let target = event.target;
+        if (target.className != "spec") return
+        let value = target.id;
+        GetOp(value);
     }
 }
 
