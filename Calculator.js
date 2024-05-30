@@ -1,8 +1,8 @@
 const Calculator = {
-    add: function(a, b) {return a + b;},
-    substract: function(a, b) {return a - b;},
-    multiply: function(a, b) {return a * b;},
-    divide: function(a, b) {return a / b;},
+    "+": function(a, b) {return a + b;},
+    "-": function(a, b) {return a - b;},
+    "*": function(a, b) {return a * b;},
+    "/": function(a, b) {return a / b;},
 }
 
 
@@ -14,25 +14,25 @@ let values = {
     b: "",
     op: "",
     val: "",
-    curr: "a"
+    id_clicked: ""
 }
 
 function ClickedOp(id) {
     if (id == "*") id = "x";
-    if (id_clicked == ""){
-        id_clicked = id;
+    if (values.id_clicked == ""){
+        values.id_clicked = id;
         let button = document.getElementById(id);
         button.style.opacity = "0.4";
     }
     else if (id == "=") {
-        let button_old = document.getElementById(id_clicked);
-        id_clicked = id;
+        let button_old = document.getElementById(values.id_clicked);
+        values.id_clicked = id;
         button_old.style.opacity = "1";
     }
     else {
-        let button_old = document.getElementById(id_clicked);
+        let button_old = document.getElementById(values.id_clicked);
         button_old.style.opacity = "1";
-        id_clicked = id;
+        values.id_clicked = id;
         let button_new = document.getElementById(id);
         button_new.style.opacity = "0.4";
     }
@@ -46,30 +46,14 @@ function ClearData() {
 }
 
 function operate(op, a, b) {
-    let operator;
     let res;
-    if (values.op == "+"){ 
-        operator = "add";
-        res = Calculator[operator](+a, +b);
+    if (values.b  == "0" && op == "/") {
+        const container = document.getElementsByClassName("display")[0];
+        container.textContent = `ERROR`
+        res = "ERROR"
     }
-    else if (values.op == "-"){ 
-        operator = "substract";
-        res = Calculator[operator](+a, +b);
-    }
-    else if (values.op == "*"){ 
-        operator = "multiply";
-        res = Calculator[operator](+a, +b);
-    }
-    else if (values.op == "/"){ 
-        operator = "divide";
-        if (values.b  == "0") {
-            const container = document.getElementsByClassName("display")[0];
-            container.textContent = `ERROR`
-        }
-        else {
-            res = Calculator[operator](+values.a, +values.b);
-        }
-        
+    else {
+       res = Calculator[op](+a, +b); 
     }
     res = Math.round(+res*1000)/1000;
     values.val = res.toString(10);
